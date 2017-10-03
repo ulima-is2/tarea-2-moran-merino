@@ -10,21 +10,12 @@ class Pelicula:
     def __init__(self, id, nombre):
         self.id = id
         self.nombre = nombre
+        self.funciones=[]
 
-
-class CinePlaneta:
-    def __init__(self):
-        peliculaIT = Pelicula(1, 'IT')
-        peliculaHF = Pelicula(2, 'La Hora Final')
-        peliculaD = Pelicula(3, 'Desparecido')
-        peliculaDeep = Pelicula(4, 'Deep El Pulpo')
-
-        peliculaIT.funciones = ['19:00', '20.30', '22:00']
-        peliculaHF.funciones = ['21:00']
-        peliculaD.funciones = ['20:00', '23:00']
-        peliculaDeep.funciones = ['16:00']
-
-        self.lista_peliculas = [peliculaIT, peliculaHF, peliculaD, peliculaDeep]
+class Cine:
+    def __init__(self,nombre):
+        self.nombre= nombre
+        self.lista_peliculas = []
         self.entradas = []
 
     def listar_peliculas(self):
@@ -38,30 +29,57 @@ class CinePlaneta:
         return len(self.entradas)
 
 
+class CineFactory:
 
-class CineStark:
-    def __init__(self):
-        peliculaD = Pelicula(1, 'Desparecido')
-        peliculaDeep = Pelicula(2, 'Deep El Pulpo')
+    instancia= None
 
-        peliculaD.funciones = ['21:00', '23:00']
-        peliculaDeep.funciones = ['16:00', '20:00']
+    @classmethod
+    def get_instance(cls):
+        if cls.instancia == None:
+            cls.instancia = Alumno()
+        return cls.instancia
 
-        self.lista_peliculas = [peliculaD, peliculaDeep]
-        self.entradas = []
+    def obtener_cine(self, cine):
+        if cine == '1':
+            peliculaIT = Pelicula(1, 'IT')
+            peliculaHF = Pelicula(2, 'La Hora Final')
+            peliculaD = Pelicula(3, 'Desparecido')
+            peliculaDeep = Pelicula(4, 'Deep El Pulpo')
 
+            peliculaIT.funcion = ['19:00', '20.30', '22:00']
+            peliculaHF.funcion = ['21:00']
+            peliculaD.funcion = ['20:00', '23:00']
+            peliculaDeep.funcion = ['16:00']
 
-    def listar_peliculas(self):
-        return self.lista_peliculas
+            cinePlaneta= Cine("Cine Planeta")
+            cinePlaneta.lista_peliculas.append(peliculaIT)
+            cinePlaneta.lista_peliculas.append(peliculaHF)
+            cinePlaneta.lista_peliculas.append(peliculaD)
+            cinePlaneta.lista_peliculas.append(peliculaDeep)
 
-    def listar_funciones(self, pelicula_id):
-        return self.lista_peliculas[int(pelicula_id) - 1].funciones
+            return cinePlaneta
 
-    def guardar_entrada(self, id_pelicula_elegida, funcion_elegida, cantidad):
-        self.entradas.append(Entrada(id_pelicula_elegida, funcion_elegida, cantidad))
-        return len(self.entradas)
+        elif cine == '2':
+            peliculaD = Pelicula(1, 'Desparecido')
+            peliculaDeep = Pelicula(2, 'Deep El Pulpo')
 
+            peliculaIT.funcion = ['19:00', '20.30', '22:00']
+            peliculaHF.funcion = ['21:00']
+            peliculaD.funcion = ['20:00', '23:00']
+            peliculaDeep.funcion = ['16:00']
+
+            cineStark = Cine("Cine Stark")
+            cinePlaneta.lista_peliculas.append(peliculaIT)
+            cinePlaneta.lista_peliculas.append(peliculaHF)
+            cinePlaneta.lista_peliculas.append(peliculaD)
+            cinePlaneta.lista_peliculas.append(peliculaDeep)
+
+            return cineStark()
+        else:
+            return None
 def main():
+    factory= CineFactory.get_instance()
+
     terminado = False;
     while not terminado:
         print('Ingrese la opción que desea realizar')
@@ -86,11 +104,8 @@ def main():
             print('********************')
 
             cine = input('Primero elija un cine:')
-            if cine == '1':
-                # CinePlaneta
-                cine = CinePlaneta()
-            elif cine == '2':
-                cine = CineStark()
+
+            cine=factory.obtener_cine(cine)
 
             peliculas = cine.listar_peliculas()
             print('********************')
@@ -128,8 +143,6 @@ def main():
             terminado = True
         else:
             print(opcion)
-
-
 
 if __name__ == '__main__':
     main()
